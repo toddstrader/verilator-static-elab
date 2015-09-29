@@ -56,11 +56,16 @@ public:
     V3Number& setDouble(double value);
     void setBit (int bit, char value) {		// Note must be pre-zeroed!
 	if (bit>=m_width) return;
-	if (value=='0'||value==0)                       m_value [bit/32] &= ~(1UL<<(bit&31));
-	else {
-	    if (value=='1'||value=='x'||value==1||value==3) m_value [bit/32] |= (1UL<<(bit&31));
-	    if (value=='z'||value=='x'||value==2||value==3) m_valueX[bit/32] |= (1UL<<(bit&31));
-	}
+	if (value=='0'||value==0||value=='z'||value==2) {
+            m_value [bit/32] &= ~(1UL<<(bit&31));
+	} else if (value=='1'||value==1||value=='x'||value==3) {
+            m_value [bit/32] |= (1UL<<(bit&31));
+        }
+	if (value=='0'||value==0||value=='1'||value==1) {
+            m_valueX [bit/32] &= ~(1UL<<(bit&31));
+	} else if (value=='z'||value==2||value=='x'||value==3) {
+            m_valueX [bit/32] |= (1UL<<(bit&31));
+        }
     }
 private:
     char bitIs	(int bit) const {
